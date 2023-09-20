@@ -183,9 +183,41 @@
                 opacity: 0.98;
             }
         }
+
+
+        #online-status-card {
+        display: none;
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translate(-50%, 0);
+        background-color: red;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 4px;
+        width: 50%;
+        text-align: center;
+        }
+
+        .status-close-button {
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+        }
+
+        .status-close-button:hover {
+        color: white;
+        }
     </style>
 </head>
 <body>
+    <br><br><br>
+    <br><br><br>
+    <div id="online-status-card" class="online-status-card">
+        <span id="status-close-button" class="status-close-button">&times;</span>
+        <p id="status-message"></p>
+      </div>
 
   <h1 class="wrapper-header"><b>SIH HACKATHON</b></h1>
 <center><img class="wagon" src="images\wagonn.png"></center>
@@ -230,6 +262,7 @@
       function fetchValue() {
           // URL to fetch the value from Blynk API
           const apiUrl = `https://blr1.blynk.cloud/external/api/get?token=uVoQYaUvojsrBPta4c-GrS41eyaReQJX&v6`;
+          
           fetch(apiUrl)
               .then(response => {
                   if (!response.ok) {
@@ -255,6 +288,59 @@
       }
       fetchValue();
       setInterval(fetchValue, 1000);
+  </script>
+  <script>
+    const onlineStatusCard = document.getElementById("online-status-card");
+    const statusMessage = document.getElementById("status-message");
+    const status_closeButton = document.getElementById("status-close-button");
+    check1 = true
+    check2 = true
+    function fetchValue1() {
+          // URL to fetch the value from Blynk API
+          const apiUrl1 ='https://blr1.blynk.cloud/external/api/isHardwareConnected?token=uVoQYaUvojsrBPta4c-GrS41eyaReQJX';
+          
+          fetch(apiUrl1)
+              .then(response => {
+                  if (!response.ok) {
+                      throw new Error(`HTTP error! Status: ${response.status}`);
+                  }
+                  return response.json();
+              })
+              .then(data => {
+                   // Default weight value
+                //    console.log(data);
+                   if(data==true && check1==true)
+                   {
+                    check1 = false;
+                    check2=true;
+                    onlineStatusCard.style.backgroundColor = "green";
+                    statusMessage.innerText = "Device is Online!";
+                    onlineStatusCard.style.display = "block";
+                    setTimeout(() => {
+                        onlineStatusCard.style.display = "none";
+                    }, 5000);
+                   }
+                  if(data==false && check2==true)
+                  {
+                    check2=false;
+                    check1=true;
+                    onlineStatusCard.style.backgroundColor = "red";
+                    statusMessage.innerText = "Device is offline, Data will be updated and reported once Online!";
+                    onlineStatusCard.style.display = "block";
+                  }
+              })
+              .catch(error => {
+                  warningElement.textContent = `Error: ${error}`;
+              });
+      }
+      fetchValue1();
+      setInterval(fetchValue1, 1000);
+    // onnline staus logic
+
+status_closeButton.addEventListener("click", () => {
+  onlineStatusCard.style.display = "none";
+});
+
   </script>
   </body>
   </html>
