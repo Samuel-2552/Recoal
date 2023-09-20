@@ -25,8 +25,10 @@
             box-shadow: 0 0 1px 0 rgba(255, 255, 255, 0.32), 0 1px 9px -1px #15222e;
         }
         .warning {
-          background: rgba(21, 34, 46, 0.25);
+          color: white;
           border-radius: 6px;
+          margin-top: 10px;
+          text-align: center;
         }
         .wrapper-header {
             font-family: Arial, Helvetica, sans-serif;
@@ -175,11 +177,13 @@
     </style>
 </head>
 <body>
+
 <h1 class="wrapper-header">90><span class="heart">Wagon weight</span><110</h1>
 <div class="img_spacing">
   <img src="images\wagon.jpg">
 </div>
 <div class="spacing">
+  <div class="warning">
 <div class="wrapper">
   <div class="gauge">
     <div class="slice-colors">
@@ -192,9 +196,10 @@
     <div class="needle" id="needle"></div>
     <div class="gauge-center"></div>
   </div>
+  OVERLOAD!!!</div>
 </div>
 </div>
-<h4 class=""
+
 
 <script>
     // Get the needle element
@@ -207,8 +212,34 @@
     }
 
     // Example: Set the needle position to 75 (you can replace this with your desired value)
-    setNeedlePosition(50);
-</script>
+    
+    const resultElement = document.getElementById('result');
+    
+    function fetchValue() {
+            // URL to fetch the value from Blynk API
+            const apiUrl = `https://blr1.blynk.cloud/external/api/get?token=uVoQYaUvojsrBPta4c-GrS41eyaReQJX&v6`;
+            fetch(apiUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    
+                    setNeedlePosition(data);
+                    resultElement.textContent = `Value from Blynk API: ${data}`;
+                })
+                .catch(error => {
+                    resultElement.textContent = `Error: ${error}`;
+                });
+        }
+        
 
+        // Fetch the value initially and then every 1 second
+         // Initial fetch
+        fetchValue();
+        setInterval(fetchValue, 1000); // Fetch every 1 second
+</script>
 </body>
 </html>
