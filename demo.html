@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Speedometer Input</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        #container {
+            margin-top: 50px;
+        }
+        #speedometerCanvas {
+            width: 300px;
+            height: 300px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Speedometer Input</h1>
+    <div id="container">
+        <label for="movementInput">Movement Input:</label>
+        <input type="range" id="movementInput" min="0" max="1" step="1">
+        <br><br>
+        <label for="weightInput">Weight Input:</label>
+        <input type="range" id="weightInput" min="0" max="100">
+    </div>
+    <canvas id="speedometerCanvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById('speedometerCanvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = 300;
+        canvas.height = 300;
+
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+        const radius = 100;
+
+        function drawNeedle(angle, length, color) {
+            ctx.save();
+            ctx.translate(centerX, centerY);
+            ctx.rotate(angle);
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(0, length);
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 5;
+            ctx.stroke();
+            ctx.restore();
+        }
+
+        function drawSemicircle() {
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, 0, Math.PI);
+            ctx.strokeStyle = 'red';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        }
+
+        function updateSpeedometer() {
+            const movementInput = document.getElementById('movementInput').value;
+            const weightInput = document.getElementById('weightInput').value;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawSemicircle();
+            drawNeedle((movementInput === '0' ? -1 : 1) * Math.PI / 6, radius - 10, 'blue');
+            drawNeedle((weightInput / 100) * Math.PI, radius - 10, 'green');
+        }
+
+        // Initial draw
+        updateSpeedometer();
+
+        // Update on input change
+        document.getElementById('movementInput').addEventListener('input', updateSpeedometer);
+        document.getElementById('weightInput').addEventListener('input', updateSpeedometer);
+    </script>
+</body>
+</html>
