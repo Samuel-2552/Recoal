@@ -187,10 +187,10 @@
 </head>
 <body>
 
-  <h1 class="wrapper-header">SIH HACKATHON</h1>
-  <div class="img_spacing">
-    <img class="wagon" src="images\wagonn.png">
-  </div>
+  <h1 class="wrapper-header"><b>SIH HACKATHON</b></h1>
+<center><img class="wagon" src="images\wagonn.png"></center>
+    
+
   <div class="spacing">
   <div class="wrapper">
     <div class="gauge">
@@ -202,7 +202,7 @@
         <div class="st slice-item"></div>
       </div>
       <div class="needle" id="needle"></div>
-      <div class="gauge-center"><div class="value_needle"><div><center>100 <br>Kg</center></div></div></div>
+      <div class="gauge-center"><div class="value_needle"><div><center><span id="result"></span> <br>Kg</center></div></div></div>
       
     </div>
     <div class="warning" id="warning">
@@ -213,6 +213,8 @@
   
   <script>
       // Get the needle element
+      const resultElement = document.getElementById('result');
+
       const needle = document.getElementById('needle');
       
       // Function to set the needle position based on a value (0-100)
@@ -237,6 +239,7 @@
               })
               .then(data => {
                    // Default weight value
+                   resultElement.textContent = data;
                    if(data<=90)
                    warningElement.textContent = 'UNDERLOAD!!!';
                   else if(data>=110)
