@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>SIH HACKATHON</title>
     <style>
         body {
             background: linear-gradient(45deg, #15222e, #8100E0);
@@ -13,8 +13,12 @@
           margin-top: 50px;
         }
         .img_spacing { 
-          margin-left: 520px;
-          margin-top: 100px;
+          margin-left: 500px;
+          margin-top: 60px;  
+        }
+        .wagon{
+          width: 50%;
+          height:auto;
         }
         .wrapper {
             display: table;
@@ -27,7 +31,7 @@
         .warning {
           color: white;
           border-radius: 6px;
-          margin-top: 10px;
+          margin-top: 50px;
           text-align: center;
         }
         .wrapper-header {
@@ -75,7 +79,7 @@
             color: #fff;
         }
         .gauge-center::before {
-            content: "128";
+            content: "100";
             font-size: 1.5em;
             width: 100%;
             padding: 10px 0 0 0;
@@ -180,10 +184,9 @@
 
 <h1 class="wrapper-header">90><span class="heart">Wagon weight</span><110</h1>
 <div class="img_spacing">
-  <img src="images\wagon.jpg">
+  <img class="wagon" src="images\wagonn.png">
 </div>
 <div class="spacing">
-  <div class="warning">
 <div class="wrapper">
   <div class="gauge">
     <div class="slice-colors">
@@ -196,7 +199,8 @@
     <div class="needle" id="needle"></div>
     <div class="gauge-center"></div>
   </div>
-  OVERLOAD!!!</div>
+  <div class="warning">
+    <div>OVERLOAD!!!</div></div>
 </div>
 </div>
 
@@ -226,20 +230,37 @@
                     return response.json();
                 })
                 .then(data => {
-                    
-                    setNeedlePosition(data);
+                  if(data<=100)
+                    weight=7;
+                  else if(data<=90)
+                    weight=0;
+                  else if(data<=110)
+                    weight=15;
+                  else if(data<=120)
+                  weight=30;
+                  else if(data<=130)
+                  weight=40;
+                  else if(data<=140)
+                  weight=50;
+                  else if(data<=150)
+                  weight=60;
+                  else if(data<=160)
+                  weight=70;
+                  else if(data<=170)
+                  weight=80;
+                  else if(data<=180)
+                  weight=90;
+                  else if(data<=200)
+                  weight=100;
+                    setNeedlePosition(weight);
                     resultElement.textContent = `Value from Blynk API: ${data}`;
                 })
                 .catch(error => {
                     resultElement.textContent = `Error: ${error}`;
                 });
         }
-        
-
-        // Fetch the value initially and then every 1 second
-         // Initial fetch
         fetchValue();
-        setInterval(fetchValue, 1000); // Fetch every 1 second
+        setInterval(fetchValue, 1000);
 </script>
 </body>
 </html>
