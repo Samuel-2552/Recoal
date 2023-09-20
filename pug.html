@@ -182,85 +182,73 @@
 </head>
 <body>
 
-<h1 class="wrapper-header">90><span class="heart">Wagon weight</span><110</h1>
-<div class="img_spacing">
-  <img class="wagon" src="images\wagonn.png">
-</div>
-<div class="spacing">
-<div class="wrapper">
-  <div class="gauge">
-    <div class="slice-colors">
-      <div class="st slice-item"></div>
-      <div class="st slice-item"></div>
-      <div class="st slice-item"></div>
-      <div class="st slice-item"></div>
-      <div class="st slice-item"></div>
-    </div>
-    <div class="needle" id="needle"></div>
-    <div class="gauge-center"></div>
+  <h1 class="wrapper-header">90><span class="heart">Wagon weight</span><110</h1>
+  <div class="img_spacing">
+    <img class="wagon" src="images\wagonn.png">
   </div>
-  <div class="warning">
-    <div>OVERLOAD!!!</div></div>
-</div>
-</div>
-
-
-<script>
-    // Get the needle element
-    const needle = document.getElementById('needle');
-    
-    // Function to set the needle position based on a value (0-100)
-    function setNeedlePosition(value) {
-        const angle = (value / 100) * 180; // Calculate the angle (0-180 degrees)
-        needle.style.transform = `rotate(${angle}deg)`; // Set the transform property
-    }
-
-    // Example: Set the needle position to 75 (you can replace this with your desired value)
-    
-    const resultElement = document.getElementById('result');
-    
-    function fetchValue() {
-            // URL to fetch the value from Blynk API
-            const apiUrl = `https://blr1.blynk.cloud/external/api/get?token=uVoQYaUvojsrBPta4c-GrS41eyaReQJX&v6`;
-            fetch(apiUrl)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! Status: ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                  if(data<=100)
-                    weight=7;
-                  else if(data<=90)
-                    weight=0;
-                  else if(data<=110)
-                    weight=15;
-                  else if(data<=120)
-                  weight=30;
-                  else if(data<=130)
-                  weight=40;
-                  else if(data<=140)
-                  weight=50;
-                  else if(data<=150)
-                  weight=60;
-                  else if(data<=160)
-                  weight=70;
-                  else if(data<=170)
-                  weight=80;
-                  else if(data<=180)
-                  weight=90;
-                  else if(data<=200)
-                  weight=100;
-                    setNeedlePosition(weight);
-                    resultElement.textContent = `Value from Blynk API: ${data}`;
-                })
-                .catch(error => {
-                    resultElement.textContent = `Error: ${error}`;
-                });
-        }
-        fetchValue();
-        setInterval(fetchValue, 1000);
-</script>
-</body>
-</html>
+  <div class="spacing">
+  <div class="wrapper">
+    <div class="gauge">
+      <div class="slice-colors">
+        <div class="st slice-item"></div>
+        <div class="st slice-item"></div>
+        <div class="st slice-item"></div>
+        <div class="st slice-item"></div>
+        <div class="st slice-item"></div>
+      </div>
+      <div class="needle" id="needle"></div>
+      <div class="gauge-center"></div>
+    </div>
+    <div class="warning" id="warning">
+      <!-- This div will display the warning message -->
+    </div>
+  </div>
+  </div>
+  
+  <script>
+      // Get the needle element
+      const needle = document.getElementById('needle');
+      
+      // Function to set the needle position based on a value (0-100)
+      function setNeedlePosition(value) {
+          const angle = (value / 100) * 180; // Calculate the angle (0-180 degrees)
+          needle.style.transform = `rotate(${angle}deg)`; // Set the transform property
+      }
+  
+      // Example: Set the needle position to 75 (you can replace this with your desired value)
+      
+      const warningElement = document.getElementById('warning');
+      
+      function fetchValue() {
+          // URL to fetch the value from Blynk API
+          const apiUrl = `https://blr1.blynk.cloud/external/api/get?token=uVoQYaUvojsrBPta4c-GrS41eyaReQJX&v6`;
+          fetch(apiUrl)
+              .then(response => {
+                  if (!response.ok) {
+                      throw new Error(`HTTP error! Status: ${response.status}`);
+                  }
+                  return response.json();
+              })
+              .then(data => {
+                  let weight = 0; // Default weight value
+                  if (data <= 90) {
+                      weight = 0;
+                      warningElement.textContent = 'UNDERLOAD!!!';
+                  } else if (data >= 110) {
+                      weight = 100;
+                      warningElement.textContent = 'OVERLOAD!!!';
+                  } else {
+                      weight = ((data - 90) / 20) * 100; // Linear mapping between 90-110 to 0-100
+                      warningElement.textContent = ''; // Clear any previous warning
+                  }
+                  setNeedlePosition(weight);
+              })
+              .catch(error => {
+                  warningElement.textContent = `Error: ${error}`;
+              });
+      }
+      fetchValue();
+      setInterval(fetchValue, 1000);
+  </script>
+  </body>
+  </html>
