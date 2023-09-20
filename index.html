@@ -6,7 +6,7 @@
     <title>SIH HACKATHON</title>
     <style>
         body {
-            background: linear-gradient(45deg, #15222e, #8100E0);
+            background: linear-gradient(45deg, #15222e, #5cd687);
             height: 100vh;
         }
         .spacing {
@@ -209,11 +209,40 @@
         .status-close-button:hover {
         color: white;
         }
+
+        .logo-container {
+            position: absolute;
+            top: 0;
+        }
+
+        .logo-container.left {
+            left: 0;
+        }
+
+        .logo-container.right {
+            right: 0;
+        }
+
+        .logo1 {
+            width: 220px; /* Adjust the width as needed */
+            height: auto;
+        }
+        .logo2 {
+            width: 150px; /* Adjust the width as needed */
+            height: auto;
+        }
     </style>
 </head>
 <body>
+    
     <br><br><br>
-    <br><br><br>
+    <div class="logo-container left">
+        <img src="SIH2023.png" alt="Logo 1" class="logo1">
+    </div>
+    <div class="logo-container right">
+        <img src="REC.png" alt="Logo 2" class="logo2">
+    </div>
+    <br>
     <div id="online-status-card" class="online-status-card">
         <span id="status-close-button" class="status-close-button">&times;</span>
         <p id="status-message"></p>
