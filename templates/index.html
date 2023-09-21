@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIH HACKATHON</title>
+    <style>
+        body {
+            background: linear-gradient(45deg, #15222e, #5cd687);
+            height: 100vh;
+        }
+        .spacing {
+          margin-top: 50px;
+        }
+        .img_spacing { 
+          margin-left: 500px;
+          margin-top: 60px;  
+        }
+        .wagon{
+          width: 50%;
+          height:auto;
+        }
+        .wrapper {
+            display: table;
+            margin: 0 auto;
+            background: rgba(21, 34, 46, 0.25);
+            padding: 35px 40px 40px;
+            border-radius: 6px;
+            box-shadow: 0 0 1px 0 rgba(255, 255, 255, 0.32), 0 1px 9px -1px #15222e;
+        }
+        .warning {
+          color: white;
+          font-size: 25px;
+          border-radius: 6px;
+          margin-top: 50px;
+          text-align: center;
+        }
+        .wrapper-header {
+            font-family: Arial, Helvetica, sans-serif;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.74);
+            margin: 30px 0 15px;
+            font-weight: normal;
+        }
+        
+        .heart {
+            margin: 0 8px;
+            display: inline-block;
+            animation: simplePulse ease-in-out 1.1s infinite;
+        }
+        .value_needle{
+          font-size: larger;
+          margin-top: 10px;
+        }
+        
+        .gauge {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #e7e7e7;
+            box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.09), 0 0 35px 5px rgba(255, 255, 255, 0.29);
+            width: 200px;
+            height: 100px;
+            border-radius: 100px 100px 0 0;
+            position: relative;
+            overflow: hidden;
+            /* safari fix */
+            -webkit-transform-style: flat;
+            -webkit-transform: translateZ(0px);
+        }
+        .gauge.min-scaled {
+            transform: scale(0.5);
+        }
+        
+        .gauge-center {
+            content: "";
+            color: #fff;
+            width: 60%;
+            height: 60%;
+            background: #15222E;
+            border-radius: 100px 100px 0 0;
+            position: absolute;
+            box-shadow: 0 -13px 15px -10px rgba(0, 0, 0, 0.28);
+            right: 21%;
+            bottom: 0;
+            color: #fff;
+        }
+        .gauge-center::before {
+            content: " ";
+            font-size: 1.5em;
+            width: 100%;
+            padding: 10px 0 0 0;
+            text-align: center;
+            float: left;
+            -webkit-font-smoothing: antialiased;
+        }
+        .gauge-center::after {
+            content: "";
+            width: 100%;
+            float: left;
+            opacitY: 0.6;
+            text-align: center;
+        }
+        
+        .needle {
+            width: 78px;
+            height: 7px;
+            background: #15222E;
+            border-bottom-left-radius: 100%;
+            border-bottom-right-radius: 5px;
+            border-top-left-radius: 100%;
+            border-top-right-radius: 5px;
+            position: absolute;
+            bottom: 4px;
+            left: 20px;
+            transform-origin: 100% 4px;
+            /* animation: speed 5s infinite; */
+            box-shadow: 0 2px 2px 1px rgba(0, 0, 0, 0.38);
+        }
+        
+        .slice-colors .st {
+            position: absolute;
+            bottom: 0;
+            width: 60px;
+            height: 0;
+            border-bottom: 80px solid #000;
+            border-left: 12px solid transparent;
+            border-right: 12px solid transparent;
+        }
+        .slice-colors .st.slice-item:nth-child(1) {
+            border-bottom-color: #1eaa59;
+            left: -2px;
+        }
+        .slice-colors .st.slice-item:nth-child(2) {
+            border-bottom-color: #9baa1e;
+            transform: rotate(135deg);
+            transform-origin: right;
+            top: 12px;
+            left: -65px;
+        }
+        .slice-colors .st.slice-item:nth-child(3) {
+            border-bottom-color: #f1c40f;
+            transform: rotate(179deg);
+            transform-origin: right;
+            top: -20px;
+            left: -62px;
+            border-bottom-width: 90px;
+            border-left-width: 45px;
+            border-right-width: 45px;
+            width: 18px;
+        }
+        .slice-colors .st.slice-item:nth-child(4) {
+            border-bottom-color: #e67e22;
+            transform: rotate(219deg);
+            transform-origin: right;
+            top: -23px;
+            left: 43px;
+        }
+        .slice-colors .st.slice-item:nth-child(5) {
+            border-bottom-color: #E84C3D;
+            transform: rotate(240deg);
+            transform-origin: right;
+            right: 52px;
+        }
+        
+        @-webkit-keyframes speed {
+            0% {
+                transform: rotate(90deg);
+            }
+             40% {
+                transform: rotate(90deg);
+            }
+            55% {
+                transform: rotate(90deg);
+            }
+            75% {
+                transform: rotate(90deg);
+            }
+        }
+        @-webkit-keyframes simplePulse {
+            from {
+                opacity: 0.4;
+            }
+            to {
+                opacity: 0.98;
+            }
+        }
+
+
+        #online-status-card {
+        display: none;
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translate(-50%, 0);
+        background-color: red;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 4px;
+        width: 50%;
+        text-align: center;
+        }
+
+        .status-close-button {
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+        }
+
+        .status-close-button:hover {
+        color: white;
+        }
+
+        .logo-container {
+            position: absolute;
+            top: 0;
+        }
+
+        .logo-container.left {
+            left: 0;
+        }
+
+        .logo-container.right {
+            right: 0;
+        }
+
+        .logo1 {
+            width: 220px; /* Adjust the width as needed */
+            height: auto;
+        }
+        .logo2 {
+            width: 150px; /* Adjust the width as needed */
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    
+    <br><br><br>
+    <div class="logo-container left">
+        <img src="{{ url_for('static', filename='images/wagonn.png') }}" alt="Logo 1" class="logo1">
+    </div>
+    <div class="logo-container right">
+        <img src="REC.png" alt="Logo 2" class="logo2">
+    </div>
+    <br>
+    <div id="online-status-card" class="online-status-card">
+        <span id="status-close-button" class="status-close-button">&times;</span>
+        <p id="status-message"></p>
+      </div>
+
+  <h1 class="wrapper-header"><b>SIH HACKATHON</b></h1>
+  <h3 class="wrapper-header">Wagon Weight Monitoring</h3>
+<center><img class="wagon" src="images\wagonn.png"></center>
+    
+
+  <div class="spacing">
+  <div class="wrapper">
+    <div class="gauge">
+      <div class="slice-colors">
+        <div class="st slice-item"></div>
+        <div class="st slice-item"></div>
+        <div class="st slice-item"></div>
+        <div class="st slice-item"></div>
+        <div class="st slice-item"></div>
+      </div>
+      <div class="needle" id="needle"></div>
+      <div class="gauge-center"><div class="value_needle"><div><center><span id="result"></span> <br>Kg</center></div></div></div>
+      
+    </div>
+    <div class="warning" id="warning">
+      <!-- This div will display the warning message -->
+    </div>
+  </div>
+  </div>
+  
+  <script>
+      // Get the needle element
+      const resultElement = document.getElementById('result');
+
+      const needle = document.getElementById('needle');
+      
+      // Function to set the needle position based on a value (0-100)
+      function setNeedlePosition(value) {
+          const angle = (value / 100) * 180; // Calculate the angle (0-180 degrees)
+          needle.style.transform = `rotate(${angle}deg)`; // Set the transform property
+      }
+  
+      // Example: Set the needle position to 75 (you can replace this with your desired value)
+      
+      const warningElement = document.getElementById('warning');
+      
+      function fetchValue() {
+          // URL to fetch the value from Blynk API
+          const apiUrl = `https://blr1.blynk.cloud/external/api/get?token=uVoQYaUvojsrBPta4c-GrS41eyaReQJX&v6`;
+          
+          fetch(apiUrl)
+              .then(response => {
+                  if (!response.ok) {
+                      throw new Error(`HTTP error! Status: ${response.status}`);
+                  }
+                  return response.json();
+              })
+              .then(data => {
+                   // Default weight value
+                   resultElement.textContent = data;
+                   if(data<=90)
+                   warningElement.textContent = 'UNDERLOAD!!!';
+                  else if(data>=110)
+                  warningElement.textContent = 'OVERLOAD!!!';
+                  else 
+                  warningElement.textContent='Correct Load';
+                  weight=data/2;
+                  setNeedlePosition(weight);
+              })
+              .catch(error => {
+                  warningElement.textContent = `Error: ${error}`;
+              });
+      }
+      fetchValue();
+      setInterval(fetchValue, 1000);
+  </script>
+  <script>
+    const onlineStatusCard = document.getElementById("online-status-card");
+    const statusMessage = document.getElementById("status-message");
+    const status_closeButton = document.getElementById("status-close-button");
+    check1 = true
+    check2 = true
+    function fetchValue1() {
+          // URL to fetch the value from Blynk API
+          const apiUrl1 ='https://blr1.blynk.cloud/external/api/isHardwareConnected?token=uVoQYaUvojsrBPta4c-GrS41eyaReQJX';
+          
+          fetch(apiUrl1)
+              .then(response => {
+                  if (!response.ok) {
+                      throw new Error(`HTTP error! Status: ${response.status}`);
+                  }
+                  return response.json();
+              })
+              .then(data => {
+                   // Default weight value
+                //    console.log(data);
+                   if(data==true && check1==true)
+                   {
+                    check1 = false;
+                    check2=true;
+                    onlineStatusCard.style.backgroundColor = "green";
+                    statusMessage.innerText = "Device is Online!";
+                    onlineStatusCard.style.display = "block";
+                    setTimeout(() => {
+                        onlineStatusCard.style.display = "none";
+                    }, 5000);
+                   }
+                  if(data==false && check2==true)
+                  {
+                    check2=false;
+                    check1=true;
+                    onlineStatusCard.style.backgroundColor = "red";
+                    statusMessage.innerText = "Device is offline, Data will be updated and reported once Online!";
+                    onlineStatusCard.style.display = "block";
+                  }
+              })
+              .catch(error => {
+                  warningElement.textContent = `Error: ${error}`;
+              });
+      }
+      fetchValue1();
+      setInterval(fetchValue1, 1000);
+    // onnline staus logic
+
+status_closeButton.addEventListener("click", () => {
+  onlineStatusCard.style.display = "none";
+});
+
+  </script>
+  </body>
+  </html>
