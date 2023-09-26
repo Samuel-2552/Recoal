@@ -303,13 +303,15 @@
               .then(data => {
                    // Default weight value
                    resultElement.textContent = data;
-                   if(data<=90)
+                   if(data<=0.1)
+                   warningElement.textContent = "NO LOAD!!!";
+                   else if(data>0.1 && data<=0.8)
                    warningElement.textContent = 'UNDERLOAD!!!';
-                  else if(data>=110)
+                  else if(data>1.2)
                   warningElement.textContent = 'OVERLOAD!!!';
                   else 
                   warningElement.textContent='Correct Load';
-                  weight=data/2;
+                  weight=data*50;
                   setNeedlePosition(weight);
               })
               .catch(error => {
